@@ -1,6 +1,8 @@
 package com.androidbelieve.drawerwithswipetabs;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -19,6 +21,10 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.HTTP;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -31,75 +37,100 @@ import java.util.ArrayList;
  */
 public class PrimaryFragment extends Fragment {
     InputStream is;
-    String result,name,line;
+    String result,name,line,mail,pass;
     EditText email_et,pw_et;
     Button btn_cnx;
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.connexion,null);
+   /* public void onCreate(Bundle savedInstanceState) {
 
-        /*LayoutInflater
-        View view = inflater.inflate(R.layout.connexion, null);
-        email_et = (EditText)view.findViewById(R.id.editTextmail);
-        pw_et = (EditText)view.findViewById(R.id.editTextmdp);
-        btn_cnx = (Button)view.findViewById(R.id.buttonconnexion);
-        */
+    }*/
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        //return inflater.inflate(R.layout.connexion,null);
+        //UserLogin();
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        View rootView = inflater.inflate(R.layout.connexion, container, false);
+        email_et = (EditText)rootView.findViewById(R.id.editTextmail);
+        pw_et = (EditText)rootView.findViewById(R.id.editTextmdp);
+
+        btn_cnx = (Button)rootView.findViewById(R.id.buttonconnexion);
+        btn_cnx.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mail= email_et.getText().toString();
+                pass= pw_et.getText().toString();
+                UserLogin();
+            }
+        });
+
+        return rootView;
     }
 
-    public void insert()
-    {
+    public void UserLogin(){
         ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 
-        nameValuePairs.add(new BasicNameValuePair("email", "jawher"));
-        nameValuePairs.add(new BasicNameValuePair("password", "000"));
+        nameValuePairs.add(new BasicNameValuePair("mail", mail));
+        nameValuePairs.add(new BasicNameValuePair("pw", pass));
+        try {
+            /*JSONObject json = new JSONObject();
+            json.put("mail", "belhassen.bens@gmail.com");
+            json.put("password", "bens");*/
+            HttpParams httpParams = new BasicHttpParams();
+            HttpConnectionParams.setConnectionTimeout(httpParams, 5000);
+            HttpConnectionParams.setSoTimeout(httpParams, 5000);
+            HttpClient client = new DefaultHttpClient(httpParams);
+            String url = "http://192.168.1.7/co-voiturage_php/covWS/Login.php";
 
-        try
-        {
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost("http://10.0.2.2/co-voiturage_php/covWS/Login.php");
-            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-            HttpResponse response = httpclient.execute(httppost);
+            HttpPost request = new HttpPost(url);
+            // request.setEntity(new ByteArrayEntity(json.toString().getBytes("UTF8")));
+            //request.setHeader("json", json.toString());
+            request.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+            HttpResponse response = client.execute(request);
             HttpEntity entity = response.getEntity();
-            is = entity.getContent();
+            // If the response does not enclose an entity, there is no need
+            if (entity != null) {
+                InputStream instream = entity.getContent();
+                String result = convertStreamToString(instream);
 
-            Log.e("pass 1", "connection success ");
-        }
-        catch(Exception e)
-        {
-            Log.e("Fail 1", e.toString());
-            Toast.makeText(getActivity().this, "Invalid IP Address",
+                JSONObject json_data = new JSONObject(result);
+                int code=(json_data.getInt("code"));
+                if(code==1)
+                {
+
+                    Toast.makeText(getActivity(), "Connexion OK",
+                            Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    Toast.makeText(getActivity(), "Sorry, Try Again",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        } catch (Throwable t) {
+            Toast.makeText(getActivity(), "Request failed: " + t.toString(),
                     Toast.LENGTH_LONG).show();
         }
+    }
 
-        try
-        {
-            BufferedReader reader = new BufferedReader
-                    (new InputStreamReader(is,"iso-8859-1"),8);
-            StringBuilder sb = new StringBuilder();
-            while ((line = reader.readLine()) != null)
-            {
-                sb.append(line + "\n");
+    public static String convertStreamToString(InputStream is) {
+        StringBuilder sb = new StringBuilder();
+        try{
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is, HTTP.UTF_8));
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line).append("\n");
             }
             is.close();
-            result = sb.toString();
-            Log.e("pass 2", "connection success ");
+        } catch(OutOfMemoryError om){
+            om.printStackTrace();
+        } catch(Exception ex){
+            ex.printStackTrace();
         }
-        catch(Exception e)
-        {
-            Log.e("Fail 2", e.toString());
-        }
-
-        try
-        {
-            JSONObject json_data = new JSONObject(result);
-            name=(json_data.getString("name"));
-            Toast.makeText(getActivity(), "Name : "+name,
-                    Toast.LENGTH_SHORT).show();
-        }
-        catch(Exception e)
-        {
-            Log.e("Fail 3", e.toString());
-        }
+        return sb.toString();
     }
+
+
 }

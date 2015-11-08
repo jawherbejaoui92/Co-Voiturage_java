@@ -1,14 +1,9 @@
 package com.androidbelieve.drawerwithswipetabs;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.StrictMode;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -35,39 +30,32 @@ import java.util.ArrayList;
 /**
  * Created by Ratan on 7/29/2015.
  */
-public class PrimaryFragment extends Fragment {
+public class  Connexion extends Activity {
     InputStream is;
     String result,name,line,mail,pass;
     EditText email_et,pw_et;
     Button btn_cnx;
-    @Nullable
+
     @Override
-   /* public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.connexion);
+        email_et = (EditText)findViewById(R.id.editTextmail);
+        pw_et = (EditText)findViewById(R.id.editTextmdp);
 
-    }*/
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //return inflater.inflate(R.layout.connexion,null);
-        //UserLogin();
-        if (android.os.Build.VERSION.SDK_INT > 9) {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-        }
-        View rootView = inflater.inflate(R.layout.connexion, container, false);
-        email_et = (EditText)rootView.findViewById(R.id.editTextmail);
-        pw_et = (EditText)rootView.findViewById(R.id.editTextmdp);
-
-        btn_cnx = (Button)rootView.findViewById(R.id.buttonconnexion);
+        btn_cnx = (Button)findViewById(R.id.buttonconnexion);
         btn_cnx.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mail= email_et.getText().toString();
                 pass= pw_et.getText().toString();
                 UserLogin();
+
             }
         });
 
-        return rootView;
     }
+
 
     public void UserLogin(){
         ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
@@ -100,17 +88,19 @@ public class PrimaryFragment extends Fragment {
                 if(code==1)
                 {
 
-                    Toast.makeText(getActivity(), "Connexion OK",
+                    Toast.makeText(Connexion.this, "Connexion OK",
                             Toast.LENGTH_LONG).show();
+                    Intent myIntent = new Intent(Connexion.this, MainActivity.class);
+                    Connexion.this.startActivity(myIntent);
                 }
                 else
                 {
-                    Toast.makeText(getActivity(), "Sorry, Try Again",
+                    Toast.makeText(Connexion.this, "Sorry, Try Again",
                             Toast.LENGTH_LONG).show();
                 }
             }
         } catch (Throwable t) {
-            Toast.makeText(getActivity(), "Request failed: " + t.toString(),
+            Toast.makeText(Connexion.this, "Request failed: " + t.toString(),
                     Toast.LENGTH_LONG).show();
         }
     }

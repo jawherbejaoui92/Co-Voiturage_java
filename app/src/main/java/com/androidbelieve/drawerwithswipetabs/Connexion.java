@@ -34,7 +34,7 @@ public class  Connexion extends Activity {
     InputStream is;
     String result,name,line,mail,pass;
     EditText email_et,pw_et;
-    Button btn_cnx;
+    Button btn_cnx,btn_ins;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +42,17 @@ public class  Connexion extends Activity {
         setContentView(R.layout.connexion);
         email_et = (EditText)findViewById(R.id.editTextmail);
         pw_et = (EditText)findViewById(R.id.editTextmdp);
+
+        btn_ins = (Button)findViewById(R.id.buttoninscription);
+
+        btn_ins.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(Connexion.this, Inscription_1_2.class);
+                Connexion.this.startActivity(myIntent);
+            }
+        });
+
 
         btn_cnx = (Button)findViewById(R.id.buttonconnexion);
         btn_cnx.setOnClickListener(new View.OnClickListener() {

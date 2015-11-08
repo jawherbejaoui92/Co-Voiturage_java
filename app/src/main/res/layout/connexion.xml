@@ -86,4 +86,19 @@
         android:layout_gravity="center_horizontal"
         android:textSize="25dp" />
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:gravity="bottom">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/button_insc"
+            android:id="@+id/buttoninscription"
+            android:layout_gravity="center_horizontal|bottom" />
+    </LinearLayout>
+
 </LinearLayout>

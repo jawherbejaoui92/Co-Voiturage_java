@@ -24,8 +24,8 @@
     <string name="reponse_textview">Réponse : </string>
     <!-- hint !-->
     <string name="hint_email">xxxxxx@xxxx.xxx</string>
-    <string name="hint_mdp">Mot de passe</string>
-    <string name="hint_confirme_mdp">Confirmer</string>
+    <string name="hint_mdp">****</string>
+    <string name="hint_confirme_mdp">****</string>
     <string name="hint_nom">Nom</string>
     <string name="hint_prenom">Prénom</string>
     <string name="hint_tel">xx xxx xxx</string>
@@ -33,16 +33,17 @@
     <string name="hint_reponse">Réponse</string>
     <!-- error provider !-->
     <string name="erreur_champvide">Attention! champ vide</string>
-    <string name="erreuremail">Email doit être saise sous cette forme : xxxxxx@xxxx.xxx </string>
-    <string name="erreurmdp_inf">Minumum 4 lettres ou chiffres!</string>
-    <string name="erreurmdp_identique">Deux champs non identiques !</string>
-    <string name="erreur_inf">Minumum 4 lettres ou chiffres</string>
+    <string name="erreuremail">xxxxxx@xxxx.xxx </string>
+    <string name="erreurmdp_inf">Minumum 4 caractères</string>
+    <string name="erreurmdp_identique">Deux champs non identiques</string>
+    <string name="erreur_inf">Minumum 4 caractères</string>
     <string name="erreursex">Selectionner votre sexe !</string>
     <string name="erreur_tel">8 chiffres pour le numéro de téléphone !</string>
 
 
     <string name="button_connexion">Connexion</string>
     <string name="button_insc">Inscription</string>
+    <string name="button_next">Suivant</string>
 
 
 

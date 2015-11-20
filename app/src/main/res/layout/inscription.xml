@@ -284,7 +284,9 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:background="#ffaa00"></LinearLayout>
+                android:background="#ffaa00"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"></LinearLayout>
 
             <LinearLayout
                 android:orientation="vertical"
@@ -388,7 +390,9 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:background="#ffaa00" />
+                android:background="#ffaa00"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp" />
 
             <Button
                 android:layout_width="wrap_content"

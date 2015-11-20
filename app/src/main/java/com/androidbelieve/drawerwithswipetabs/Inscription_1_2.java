@@ -105,7 +105,7 @@ public class Inscription_1_2 extends AppCompatActivity {
             }
         });
     }
-
+//ok
     public void UserInsc(){
         ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
         nameValuePairs.add(new BasicNameValuePair("email", "benas@gmail.com"));

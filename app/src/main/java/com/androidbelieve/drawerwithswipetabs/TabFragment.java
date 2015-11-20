@@ -91,9 +91,9 @@ public class TabFragment extends Fragment {
                 case 0 :
                     return "Publier";
                 case 1 :
-                    return "Social";
+                    return "Rechercher";
                 case 2 :
-                    return "Updates";
+                    return "Historique";
             }
                 return null;
         }

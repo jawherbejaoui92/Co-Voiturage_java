@@ -283,6 +283,12 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#ffaa00"></LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
                 android:layout_height="fill_parent"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
@@ -377,6 +383,12 @@
                         android:gravity="center" />
                 </LinearLayout>
             </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#ffaa00" />
 
             <Button
                 android:layout_width="wrap_content"

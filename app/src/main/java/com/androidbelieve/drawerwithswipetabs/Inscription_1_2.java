@@ -342,7 +342,7 @@ public class Inscription_1_2 extends AppCompatActivity {
 
                     Toast.makeText(Inscription_1_2.this, "Inscri OK",
                             Toast.LENGTH_LONG).show();
-                    Intent myIntent = new Intent(Inscription_1_2.this, Inscription_2_2.class);
+                    Intent myIntent = new Intent(Inscription_1_2.this, MainActivity.class);
                     startActivity(myIntent);
                 } else {
                     Toast.makeText(Inscription_1_2.this, "Sorry, Try Again",

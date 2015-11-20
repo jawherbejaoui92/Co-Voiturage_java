@@ -27,10 +27,7 @@
             android:name=".Inscription_1_2"
             android:label="@string/app_name" >
         </activity>
-        <activity
-            android:name=".Inscription_2_2"
-            android:label="@string/app_name" >
-        </activity>
+
 
     </application>
 

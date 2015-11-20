@@ -268,14 +268,6 @@
                     android:id="@+id/textView8"
                     android:layout_marginRight="5dp" />
 
-                <DatePicker
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/datePickernaissance"
-                    android:calendarViewShown="false"
-                    android:scaleY="0.8"
-                    android:scaleX="0.8" >
-                </DatePicker>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

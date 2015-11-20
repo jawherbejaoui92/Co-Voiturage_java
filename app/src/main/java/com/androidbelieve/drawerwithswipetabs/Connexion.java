@@ -3,6 +3,7 @@ package com.androidbelieve.drawerwithswipetabs;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,8 +29,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 /**
- * Created by Ratan on 7/29/2015.
+ * Created by dfghj on 04/11/2015.
  */
+
 public class  Connexion extends Activity {
     InputStream is;
     String result,name,line,mail,pass;
@@ -40,6 +42,10 @@ public class  Connexion extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.connexion);
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
         email_et = (EditText)findViewById(R.id.editTextmail);
         pw_et = (EditText)findViewById(R.id.editTextmdp);
 
@@ -81,7 +87,7 @@ public class  Connexion extends Activity {
             HttpConnectionParams.setConnectionTimeout(httpParams, 5000);
             HttpConnectionParams.setSoTimeout(httpParams, 5000);
             HttpClient client = new DefaultHttpClient(httpParams);
-            String url = "http://192.168.1.7/co-voiturage_php/covWS/Login.php";
+            String url = "http://192.168.56.1/co-voiturage_php/covWS/Login.php";
 
             HttpPost request = new HttpPost(url);
             // request.setEntity(new ByteArrayEntity(json.toString().getBytes("UTF8")));

@@ -1,15 +1,21 @@
 package com.androidbelieve.drawerwithswipetabs;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
@@ -36,9 +42,10 @@ import java.util.ArrayList;
  */
 public class Inscription_1_2 extends AppCompatActivity {
 
-    String name,surname,pw,city,mail,telp;
+    String name, surname, pw, city, mail, telp;
 
-    EditText email,mdp,nom,prenom,telephon,ville;
+    EditText email, mdp, nom, prenom, telephon, ville;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,18 +55,16 @@ public class Inscription_1_2 extends AppCompatActivity {
             StrictMode.setThreadPolicy(policy);
         }
 
-        final Tester_champ test = new Tester_champ();
 
         email = (EditText) findViewById(R.id.editTextmail);
         mdp = (EditText) findViewById(R.id.editTextmdp);
         EditText confirmermdp = (EditText) findViewById(R.id.editTextconfirmer_mdp);
         nom = (EditText) findViewById(R.id.editTextnom);
         prenom = (EditText) findViewById(R.id.editTextprenom);
-        RadioGroup radioGroupsex = (RadioGroup) findViewById(R.id.RadioGroupsex);
-        RadioButton homme = (RadioButton) findViewById(R.id.radioButtonhomme);
-        RadioButton femme = (RadioButton) findViewById(R.id.radioButtonfemme);
         telephon = (EditText) findViewById(R.id.editTexttelephone);
         ville = (EditText) findViewById(R.id.editTextville);
+        EditText tel = (EditText) findViewById(R.id.editTexttelephone);
+        DatePicker dateNaiss = (DatePicker) findViewById(R.id.datePickerNaiss);
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -70,44 +75,219 @@ public class Inscription_1_2 extends AppCompatActivity {
         Button button_suivant = (Button) findViewById(R.id.buttonsuivant);
 
 
+        TestMotdePasse(mdp, confirmermdp, getResources().getString(R.string.erreurmdp_identique));
+        TestVide(email, getResources().getString(R.string.erreur_champvide));
+        TestVide(mdp, getResources().getString(R.string.erreur_champvide));
+        TestVide(nom, getResources().getString(R.string.erreur_champvide));
+        TestVide(prenom, getResources().getString(R.string.erreur_champvide));
+        TestVide(tel, getResources().getString(R.string.erreur_champvide));
+        TestVide(ville, getResources().getString(R.string.erreur_champvide));
 
-        test.TestVide(email, getResources().getString(R.string.erreur_champvide));
-        test.TestVide(mdp, getResources().getString(R.string.erreur_champvide));
-        test.TestVide(confirmermdp, getResources().getString(R.string.erreur_champvide));
-        test.TestVide(nom, getResources().getString(R.string.erreur_champvide));
-        test.TestVide(prenom, getResources().getString(R.string.erreur_champvide));
-        test.TestVide(telephon, getResources().getString(R.string.erreur_champvide));
-        test.TestVide(ville, getResources().getString(R.string.erreur_champvide));
+        TestLonguer(nom, getResources().getString(R.string.erreurmdp_inf));
+        TestLonguer(prenom, getResources().getString(R.string.erreurmdp_inf));
+        TestLonguer(mdp, getResources().getString(R.string.erreurmdp_inf));
+        TestLonguer(ville, getResources().getString(R.string.erreurmdp_inf));
 
-        test.TestMotdePasse(mdp, confirmermdp, getResources().getString(R.string.erreurmdp_identique), getResources().getString(R.string.erreur_inf));
+        TestLonguerTel(tel, getResources().getString(R.string.erreur_tel));
+        String strEmailAddress;
 
-        test.TestLonguer(email, getResources().getString(R.string.erreurmdp_inf));
-        test.TestLonguer(nom, getResources().getString(R.string.erreurmdp_inf));
-        test.TestLonguer(prenom,getResources().getString(R.string.erreurmdp_inf));
-        test.TestLonguer(mdp,getResources().getString(R.string.erreurmdp_inf));
-        test.TestLonguer(confirmermdp,getResources().getString(R.string.erreurmdp_inf));
-        test.TestLonguer(ville,getResources().getString(R.string.erreurmdp_inf));
-
-        test.TestLonguerTel(telephon, getResources().getString(R.string.erreur_tel));
 
         button_suivant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                name = nom.getText().toString();
-                pw = mdp.getText().toString();
-                surname = prenom.getText().toString();
-                telp = telephon.getText().toString();
-                city = ville.getText().toString();
-                mail = email.getText().toString();
-                UserInsc();
-                //CustomDialag();
+
+                if (TestAll() == "done") {
+
+
+                    name = nom.getText().toString();
+                    pw = mdp.getText().toString();
+                    surname = prenom.getText().toString();
+                    telp = telephon.getText().toString();
+                    city = ville.getText().toString();
+                    mail = email.getText().toString();
+                    UserInsc();
+
+
+                    Intent myIntent = new Intent(Inscription_1_2.this, Inscription_2_2.class);
+                    startActivity(myIntent);
+
+                } else {
+                    CustomDialag(TestAll());
+                }
 
             }
         });
     }
-//ok
+
+
+    public String TestAll() {
+        String msg;
+        EditText email = (EditText) findViewById(R.id.editTextmail);
+        EditText mdp = (EditText) findViewById(R.id.editTextmdp);
+        EditText confirmermdp = (EditText) findViewById(R.id.editTextconfirmer_mdp);
+        EditText nom = (EditText) findViewById(R.id.editTextnom);
+        EditText prenom = (EditText) findViewById(R.id.editTextprenom);
+        RadioGroup radioGroupsex = (RadioGroup) findViewById(R.id.RadioGroupsex);
+        RadioButton homme = (RadioButton) findViewById(R.id.radioButtonhomme);
+        RadioButton femme = (RadioButton) findViewById(R.id.radioButtonfemme);
+        EditText tel = (EditText) findViewById(R.id.editTexttelephone);
+        EditText ville = (EditText) findViewById(R.id.editTextville);
+        DatePicker dateNaiss = (DatePicker) findViewById(R.id.datePickerNaiss);
+
+        if ((email.getText().toString().length() < 4) || (mdp.getText().toString().length() < 4) || (confirmermdp.getText().toString().length() < 4) || (nom.getText().toString().length() < 4) || (prenom.getText().toString().length() < 4) || (tel.getText().toString().length() < 4) || (ville.getText().toString().length() < 4)) {
+            msg = "4 caractères minimum pour chaque champ";
+        } else if (!(mdp.getText().toString().equals(confirmermdp.getText().toString()))) {
+            msg = "Mot de passe non identiques";
+        } else if (!(homme.isChecked()) && !(femme.isChecked())) {
+            msg = "Selectionne votre sexe";
+        } else if ((tel.getText().toString().length() != 8)) {
+            msg = "Numéro de téléphone invalide";
+        } else if (2015 - dateNaiss.getYear() < 18) {
+            msg = "Date de naissance invalide";
+        } else {
+            msg = "done";
+        }
+
+        return msg;
+
+    }
+
+
+    public void TestLonguer(final EditText champ, final String msg) {
+
+        champ.addTextChangedListener(new TextWatcher() {
+            Button button_suivant = (Button) findViewById(R.id.buttonsuivant);
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if (champ.getText().toString().length() < 4) {
+                    champ.setError(msg.toString());
+
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (champ.getText().toString().length() < 4) {
+                    champ.setError(msg.toString());
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (champ.getText().toString().length() < 4) {
+                    champ.setError(msg.toString());
+
+                }
+            }
+        });
+    }
+
+    public void TestVide(final EditText champ, final String msg) {
+
+        champ.addTextChangedListener(new TextWatcher() {
+            Button button_suivant = (Button) findViewById(R.id.buttonsuivant);
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if (champ.getText().toString().length() == 0) {
+                    champ.setError(msg.toString());
+
+                }
+            }
+
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (champ.getText().toString().length() == 0) {
+                    champ.setError(msg.toString());
+
+                }
+            }
+
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (champ.getText().toString().length() == 0) {
+                    champ.setError(msg.toString());
+
+                }
+            }
+
+        });
+    }
+
+    public void TestMotdePasse(final EditText champ1, final EditText champ2, final String msg) {
+
+        champ2.addTextChangedListener(new TextWatcher() {
+            Button button_suivant = (Button) findViewById(R.id.buttonsuivant);
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if (!(champ1.getText().toString().equals(champ2.getText().toString()))) {
+                    champ2.setError(msg.toString());
+
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!(champ1.getText().toString().equals(champ2.getText().toString()))) {
+                    champ2.setError(msg.toString());
+
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!(champ1.getText().toString().equals(champ2.getText().toString()))) {
+                    champ2.setError(msg.toString());
+
+
+                }
+            }
+        });
+    }
+
+    public void TestLonguerTel(final EditText champ, final String msg) {
+
+        champ.addTextChangedListener(new TextWatcher() {
+            Button button_suivant = (Button) findViewById(R.id.buttonsuivant);
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if (champ.getText().toString().length() < 8) {
+                    champ.setError(msg.toString());
+
+
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (champ.getText().toString().length() < 8) {
+                    champ.setError(msg.toString());
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (champ.getText().toString().length() < 8) {
+                    champ.setError(msg.toString());
+
+                }
+            }
+        });
+
+    }
+
+
+    //ok
     //oui
-    public void UserInsc(){
+    public void UserInsc() {
         ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
         nameValuePairs.add(new BasicNameValuePair("email", "benas@gmail.com"));
         nameValuePairs.add(new BasicNameValuePair("nom", "med bns"));
@@ -124,7 +304,7 @@ public class Inscription_1_2 extends AppCompatActivity {
             HttpConnectionParams.setConnectionTimeout(httpParams, 5000);
             HttpConnectionParams.setSoTimeout(httpParams, 5000);
             HttpClient client = new DefaultHttpClient(httpParams);
-            String url = "http://127.0.0.1/co-voiturage_php/covWS/inscription.php";
+            String url = "http://192.168.1.1/co-voiturage_php/covWS/inscription.php";
 
             HttpPost request = new HttpPost(url);
             // request.setEntity(new ByteArrayEntity(json.toString().getBytes("UTF8")));
@@ -138,17 +318,14 @@ public class Inscription_1_2 extends AppCompatActivity {
                 String result = convertStreamToString(instream);
 
                 JSONObject json_data = new JSONObject(result);
-                int code=(json_data.getInt("code"));
-                if(code==1)
-                {
+                int code = (json_data.getInt("code"));
+                if (code == 1) {
 
                     Toast.makeText(Inscription_1_2.this, "Inscri OK",
                             Toast.LENGTH_LONG).show();
                     Intent myIntent = new Intent(Inscription_1_2.this, Inscription_2_2.class);
                     startActivity(myIntent);
-                }
-                else
-                {
+                } else {
                     Toast.makeText(Inscription_1_2.this, "Sorry, Try Again",
                             Toast.LENGTH_LONG).show();
                 }
@@ -161,34 +338,39 @@ public class Inscription_1_2 extends AppCompatActivity {
 
     public static String convertStreamToString(InputStream is) {
         StringBuilder sb = new StringBuilder();
-        try{
+        try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(is, HTTP.UTF_8));
             String line = null;
             while ((line = reader.readLine()) != null) {
                 sb.append(line).append("\n");
             }
             is.close();
-        } catch(OutOfMemoryError om){
+        } catch (OutOfMemoryError om) {
             om.printStackTrace();
-        } catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return sb.toString();
     }
-/*
-    public void CustomDialag() {
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        finish();
+        return true;
+
+    }
+
+    public void CustomDialag(String msg) {
         // Create custom dialog object
         final Dialog dialog = new Dialog(Inscription_1_2.this);
         // Include dialog.xml file
         dialog.setContentView(R.layout.custom_dialog);
         // Set dialog title
-        dialog.setTitle("Custom Dialog");
+        dialog.setTitle("Erreur");
 
         // set values for custom dialog components - text, image and button
         TextView text = (TextView) dialog.findViewById(R.id.text);
-        text.setText("Custom dialog Android example.");
-        ImageView image = (ImageView) dialog.findViewById(R.id.image);
-        image.setImageResource(R.drawable.warning);
+        text.setText(msg);
+
 
         dialog.show();
 
@@ -204,7 +386,7 @@ public class Inscription_1_2 extends AppCompatActivity {
 
         dialog.show();
 
-    }*/
+    }
 }
 
 

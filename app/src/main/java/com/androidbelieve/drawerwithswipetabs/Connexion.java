@@ -1,12 +1,16 @@
 package com.androidbelieve.drawerwithswipetabs;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
@@ -46,10 +50,17 @@ public class  Connexion extends Activity {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
+
         email_et = (EditText)findViewById(R.id.editTextmail);
         pw_et = (EditText)findViewById(R.id.editTextmdp);
 
+        TestVide(email_et, getResources().getString(R.string.erreur_champvide));
+        TestVide(pw_et, getResources().getString(R.string.erreur_champvide));
+        TestLonguer(email_et, getResources().getString(R.string.erreurmdp_inf));
+        TestLonguer(pw_et, getResources().getString(R.string.erreurmdp_inf));
+
         btn_ins = (Button)findViewById(R.id.buttoninscription);
+
 
         btn_ins.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,9 +75,14 @@ public class  Connexion extends Activity {
         btn_cnx.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mail= email_et.getText().toString();
-                pass= pw_et.getText().toString();
-                UserLogin();
+                if (TestAll() == "done") {
+                    mail = email_et.getText().toString();
+                    pass = pw_et.getText().toString();
+                    UserLogin();
+                }
+                else {
+                    CustomDialag(TestAll());
+                }
 
             }
         });
@@ -137,6 +153,183 @@ public class  Connexion extends Activity {
             ex.printStackTrace();
         }
         return sb.toString();
+    }
+
+    public String TestAll() {
+        String msg;
+        EditText email = (EditText)findViewById(R.id.editTextmail);
+        EditText mdp = (EditText)findViewById(R.id.editTextmdp);
+
+
+        if ((email.getText().toString().length() < 4) || (mdp.getText().toString().length() < 4)) {
+            msg = "4 caractères minimum pour chaque champ";
+        } else {
+            msg = "done";
+        }
+
+        return msg;
+
+    }
+
+
+    public void TestLonguer(final EditText champ, final String msg) {
+
+        champ.addTextChangedListener(new TextWatcher() {
+            Button button_suivant = (Button) findViewById(R.id.buttonsuivant);
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if (champ.getText().toString().length() < 4) {
+                    champ.setError(msg.toString());
+
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (champ.getText().toString().length() < 4) {
+                    champ.setError(msg.toString());
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (champ.getText().toString().length() < 4) {
+                    champ.setError(msg.toString());
+
+                }
+            }
+        });
+    }
+
+    public void TestVide(final EditText champ, final String msg) {
+
+        champ.addTextChangedListener(new TextWatcher() {
+            Button button_suivant = (Button) findViewById(R.id.buttonsuivant);
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if (champ.getText().toString().length() == 0) {
+                    champ.setError(msg.toString());
+
+                }
+            }
+
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (champ.getText().toString().length() == 0) {
+                    champ.setError(msg.toString());
+
+                }
+            }
+
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (champ.getText().toString().length() == 0) {
+                    champ.setError(msg.toString());
+
+                }
+            }
+
+        });
+    }
+
+    public void TestMotdePasse(final EditText champ1, final EditText champ2, final String msg) {
+
+        champ2.addTextChangedListener(new TextWatcher() {
+            Button button_suivant = (Button) findViewById(R.id.buttonsuivant);
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if (!(champ1.getText().toString().equals(champ2.getText().toString()))) {
+                    champ2.setError(msg.toString());
+
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!(champ1.getText().toString().equals(champ2.getText().toString()))) {
+                    champ2.setError(msg.toString());
+
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!(champ1.getText().toString().equals(champ2.getText().toString()))) {
+                    champ2.setError(msg.toString());
+
+
+                }
+            }
+        });
+    }
+
+    public void TestLonguerTel(final EditText champ, final String msg) {
+
+        champ.addTextChangedListener(new TextWatcher() {
+            Button button_suivant = (Button) findViewById(R.id.buttonsuivant);
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if (champ.getText().toString().length() < 8) {
+                    champ.setError(msg.toString());
+
+
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (champ.getText().toString().length() < 8) {
+                    champ.setError(msg.toString());
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (champ.getText().toString().length() < 8) {
+                    champ.setError(msg.toString());
+
+                }
+            }
+        });
+
+    }
+
+    public void CustomDialag(String msg) {
+        // Create custom dialog object
+        final Dialog dialog = new Dialog(Connexion.this);
+        // Include dialog.xml file
+        dialog.setContentView(R.layout.custom_dialog);
+        // Set dialog title
+        dialog.setTitle("Erreur");
+
+        // set values for custom dialog components - text, image and button
+        TextView text = (TextView) dialog.findViewById(R.id.text);
+        text.setText(msg);
+
+
+        dialog.show();
+
+        Button declineButton = (Button) dialog.findViewById(R.id.buttonOk);
+        // if decline button is clicked, close the custom dialog
+        declineButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Close dialog
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+
     }
 
 

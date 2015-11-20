@@ -112,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine|textCapSentences"
                 android:ems="10"
-                android:id="@+id/editText4"
+                android:id="@+id/editText_Reponse"
                 android:layout_weight="1"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
@@ -125,8 +125,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/button_suivant"
-        android:id="@+id/button"
+        android:text="@string/button_insc"
+        android:id="@+id/buttonInscri"
         android:layout_gravity="center_horizontal"
         android:textSize="25dp" />
 

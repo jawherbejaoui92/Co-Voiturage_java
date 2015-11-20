@@ -252,7 +252,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -268,16 +268,26 @@
                     android:id="@+id/textView8"
                     android:layout_marginRight="5dp" />
 
+                <DatePicker
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/datePickerNaiss"
+                    android:layout_gravity="center_horizontal"
+                    android:calendarViewShown="false"
+                    android:datePickerMode="spinner"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8" />
+
             </LinearLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/button_suivant"
+                android:id="@+id/buttonsuivant"
+                android:layout_gravity="center_horizontal"
+                android:textSize="25dp" />
         </LinearLayout>
     </ScrollView>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/button_suivant"
-        android:id="@+id/buttonsuivant"
-        android:layout_gravity="center_horizontal"
-        android:textSize="25dp" />
 
 </LinearLayout>

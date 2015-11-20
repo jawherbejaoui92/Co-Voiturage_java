@@ -175,7 +175,7 @@ public class  Connexion extends Activity {
     public void TestLonguer(final EditText champ, final String msg) {
 
         champ.addTextChangedListener(new TextWatcher() {
-            Button button_suivant = (Button) findViewById(R.id.buttonsuivant);
+
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -206,7 +206,7 @@ public class  Connexion extends Activity {
     public void TestVide(final EditText champ, final String msg) {
 
         champ.addTextChangedListener(new TextWatcher() {
-            Button button_suivant = (Button) findViewById(R.id.buttonsuivant);
+
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -240,7 +240,7 @@ public class  Connexion extends Activity {
     public void TestMotdePasse(final EditText champ1, final EditText champ2, final String msg) {
 
         champ2.addTextChangedListener(new TextWatcher() {
-            Button button_suivant = (Button) findViewById(R.id.buttonsuivant);
+
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -273,7 +273,7 @@ public class  Connexion extends Activity {
     public void TestLonguerTel(final EditText champ, final String msg) {
 
         champ.addTextChangedListener(new TextWatcher() {
-            Button button_suivant = (Button) findViewById(R.id.buttonsuivant);
+
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

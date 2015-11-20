@@ -65,7 +65,7 @@
             <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/spinner_question"
+                android:id="@+id/spinner"
                 android:soundEffectsEnabled="true"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
@@ -112,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine|textCapSentences"
                 android:ems="10"
-                android:id="@+id/editText_Reponse"
+                android:id="@+id/editText"
                 android:layout_weight="1"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"

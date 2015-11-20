@@ -10,11 +10,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,14 +67,18 @@ public class Inscription_1_2 extends AppCompatActivity {
         ville = (EditText) findViewById(R.id.editTextville);
         EditText tel = (EditText) findViewById(R.id.editTexttelephone);
         DatePicker dateNaiss = (DatePicker) findViewById(R.id.datePickerNaiss);
-
+        EditText rep = (EditText) findViewById(R.id.editText_Reponse);
+        Spinner quest = (Spinner) findViewById(R.id.spinner_question);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.liste_question, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        quest.setAdapter(adapter);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        Button button_suivant = (Button) findViewById(R.id.buttonsuivant);
+        Button button_inscrit = (Button) findViewById(R.id.buttonINSCRI);
 
 
         TestMotdePasse(mdp, confirmermdp, getResources().getString(R.string.erreurmdp_identique));
@@ -87,12 +93,14 @@ public class Inscription_1_2 extends AppCompatActivity {
         TestLonguer(prenom, getResources().getString(R.string.erreurmdp_inf));
         TestLonguer(mdp, getResources().getString(R.string.erreurmdp_inf));
         TestLonguer(ville, getResources().getString(R.string.erreurmdp_inf));
+        TestVide(rep, getResources().getString(R.string.erreur_champvide));
+        TestLonguer(rep, getResources().getString(R.string.erreurmdp_inf));
 
         TestLonguerTel(tel, getResources().getString(R.string.erreur_tel));
         String strEmailAddress;
 
 
-        button_suivant.setOnClickListener(new View.OnClickListener() {
+        button_inscrit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -108,7 +116,7 @@ public class Inscription_1_2 extends AppCompatActivity {
                     UserInsc();
 
 
-                    Intent myIntent = new Intent(Inscription_1_2.this, Inscription_2_2.class);
+                    Intent myIntent = new Intent(Inscription_1_2.this, MainActivity.class);
                     startActivity(myIntent);
 
                 } else {
@@ -133,6 +141,11 @@ public class Inscription_1_2 extends AppCompatActivity {
         EditText tel = (EditText) findViewById(R.id.editTexttelephone);
         EditText ville = (EditText) findViewById(R.id.editTextville);
         DatePicker dateNaiss = (DatePicker) findViewById(R.id.datePickerNaiss);
+        EditText rep = (EditText) findViewById(R.id.editText_Reponse);
+
+        Spinner quest = (Spinner) findViewById(R.id.spinner_question);
+
+
 
         if ((email.getText().toString().length() < 4) || (mdp.getText().toString().length() < 4) || (confirmermdp.getText().toString().length() < 4) || (nom.getText().toString().length() < 4) || (prenom.getText().toString().length() < 4) || (tel.getText().toString().length() < 4) || (ville.getText().toString().length() < 4)) {
             msg = "4 caractères minimum pour chaque champ";
@@ -144,6 +157,12 @@ public class Inscription_1_2 extends AppCompatActivity {
             msg = "Numéro de téléphone invalide";
         } else if (2015 - dateNaiss.getYear() < 18) {
             msg = "Date de naissance invalide";
+        } else if (quest.getSelectedItemPosition() == 0) {
+            msg = "Choisir votre question de sécurité";
+        } else if ((rep.getText().toString().length() < 4)) {
+            msg = "4 caractères minimum pour votre réponse";
+        } else if ((rep.getText().toString().length() < 4)) {
+            msg = "4 caractères minimum pour votre réponse";
         } else {
             msg = "done";
         }
@@ -156,7 +175,7 @@ public class Inscription_1_2 extends AppCompatActivity {
     public void TestLonguer(final EditText champ, final String msg) {
 
         champ.addTextChangedListener(new TextWatcher() {
-            Button button_suivant = (Button) findViewById(R.id.buttonsuivant);
+
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -187,7 +206,7 @@ public class Inscription_1_2 extends AppCompatActivity {
     public void TestVide(final EditText champ, final String msg) {
 
         champ.addTextChangedListener(new TextWatcher() {
-            Button button_suivant = (Button) findViewById(R.id.buttonsuivant);
+
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -221,7 +240,7 @@ public class Inscription_1_2 extends AppCompatActivity {
     public void TestMotdePasse(final EditText champ1, final EditText champ2, final String msg) {
 
         champ2.addTextChangedListener(new TextWatcher() {
-            Button button_suivant = (Button) findViewById(R.id.buttonsuivant);
+
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -254,7 +273,7 @@ public class Inscription_1_2 extends AppCompatActivity {
     public void TestLonguerTel(final EditText champ, final String msg) {
 
         champ.addTextChangedListener(new TextWatcher() {
-            Button button_suivant = (Button) findViewById(R.id.buttonsuivant);
+
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

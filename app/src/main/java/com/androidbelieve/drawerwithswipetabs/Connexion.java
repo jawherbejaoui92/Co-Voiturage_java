@@ -65,7 +65,7 @@ public class  Connexion extends Activity {
         btn_ins.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(Connexion.this, Inscription_1_2.class);
+                Intent myIntent = new Intent(Connexion.this, Inscription.class);
                 Connexion.this.startActivity(myIntent);
             }
         });
@@ -330,6 +330,13 @@ public class  Connexion extends Activity {
 
         dialog.show();
 
+    }
+
+    public void onBackPressed() {
+
+        android.os.Process.killProcess(android.os.Process.myPid());
+
+        // This above line close correctly
     }
 
 

@@ -1,5 +1,6 @@
 package com.androidbelieve.drawerwithswipetabs;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -46,16 +47,26 @@ public class MainActivity extends AppCompatActivity{
 
 
 
-                 if (menuItem.getItemId() == R.id.nav_item_sent) {
+                 if (menuItem.getItemId() == R.id.accueil) {
                      FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
                      fragmentTransaction.replace(R.id.containerView,new SentFragment()).commit();
-
+                     Intent intent = new Intent(MainActivity.this,MainActivity.class);
+                     startActivity(intent);
                  }
 
-                if (menuItem.getItemId() == R.id.nav_item_inbox) {
+                if (menuItem.getItemId() == R.id.deconnexion) {
                     FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
                     xfragmentTransaction.replace(R.id.containerView,new TabFragment()).commit();
+                    Intent intent = new Intent(MainActivity.this,Connexion.class);
+                    startActivity(intent);
                 }
+
+                 if (menuItem.getItemId() == R.id.quitter) {
+                     FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
+                     xfragmentTransaction.replace(R.id.containerView,new TabFragment()).commit();
+                     android.os.Process.killProcess(android.os.Process.myPid());
+
+                 }
 
                  return false;
             }
@@ -74,5 +85,12 @@ public class MainActivity extends AppCompatActivity{
 
                 mDrawerToggle.syncState();
 
+    }
+
+    public void onBackPressed() {
+
+        android.os.Process.killProcess(android.os.Process.myPid());
+
+        // This above line close correctly
     }
 }

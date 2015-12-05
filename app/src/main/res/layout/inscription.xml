@@ -222,7 +222,8 @@
                     android:ems="10"
                     android:id="@+id/editTexttelephone"
                     android:layout_weight="1"
-                    android:hint="@string/hint_tel"/>
+                    android:hint="@string/hint_tel"
+                    android:maxLength="8" />
             </LinearLayout>
 
             <LinearLayout

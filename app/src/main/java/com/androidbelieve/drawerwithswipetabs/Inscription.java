@@ -42,7 +42,7 @@ import java.util.ArrayList;
 /**
  * Created by Jawher B on 30/10/2015.
  */
-public class Inscription_1_2 extends AppCompatActivity {
+public class Inscription extends AppCompatActivity {
 
     String name, surname, pw, city, mail, telp;
 
@@ -89,12 +89,7 @@ public class Inscription_1_2 extends AppCompatActivity {
         TestVide(tel, getResources().getString(R.string.erreur_champvide));
         TestVide(ville, getResources().getString(R.string.erreur_champvide));
 
-        TestLonguer(nom, getResources().getString(R.string.erreurmdp_inf));
-        TestLonguer(prenom, getResources().getString(R.string.erreurmdp_inf));
-        TestLonguer(mdp, getResources().getString(R.string.erreurmdp_inf));
-        TestLonguer(ville, getResources().getString(R.string.erreurmdp_inf));
-        TestVide(rep, getResources().getString(R.string.erreur_champvide));
-        TestLonguer(rep, getResources().getString(R.string.erreurmdp_inf));
+
 
         TestLonguerTel(tel, getResources().getString(R.string.erreur_tel));
         String strEmailAddress;
@@ -116,7 +111,7 @@ public class Inscription_1_2 extends AppCompatActivity {
                     UserInsc();
 
 
-                    Intent myIntent = new Intent(Inscription_1_2.this, MainActivity.class);
+                    Intent myIntent = new Intent(Inscription.this, MainActivity.class);
                     startActivity(myIntent);
 
                 } else {
@@ -172,36 +167,7 @@ public class Inscription_1_2 extends AppCompatActivity {
     }
 
 
-    public void TestLonguer(final EditText champ, final String msg) {
 
-        champ.addTextChangedListener(new TextWatcher() {
-
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if (champ.getText().toString().length() < 4) {
-                    champ.setError(msg.toString());
-
-                }
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (champ.getText().toString().length() < 4) {
-                    champ.setError(msg.toString());
-
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (champ.getText().toString().length() < 4) {
-                    champ.setError(msg.toString());
-
-                }
-            }
-        });
-    }
 
     public void TestVide(final EditText champ, final String msg) {
 
@@ -340,17 +306,17 @@ public class Inscription_1_2 extends AppCompatActivity {
                 int code = (json_data.getInt("code"));
                 if (code == 1) {
 
-                    Toast.makeText(Inscription_1_2.this, "Inscri OK",
+                    Toast.makeText(Inscription.this, "Inscri OK",
                             Toast.LENGTH_LONG).show();
-                    Intent myIntent = new Intent(Inscription_1_2.this, MainActivity.class);
+                    Intent myIntent = new Intent(Inscription.this, MainActivity.class);
                     startActivity(myIntent);
                 } else {
-                    Toast.makeText(Inscription_1_2.this, "Sorry, Try Again",
+                    Toast.makeText(Inscription.this, "Sorry, Try Again",
                             Toast.LENGTH_LONG).show();
                 }
             }
         } catch (Throwable t) {
-            Toast.makeText(Inscription_1_2.this, "Request failed: " + t.toString(),
+            Toast.makeText(Inscription.this, "Request failed: " + t.toString(),
                     Toast.LENGTH_LONG).show();
         }
     }
@@ -380,7 +346,7 @@ public class Inscription_1_2 extends AppCompatActivity {
 
     public void CustomDialag(String msg) {
         // Create custom dialog object
-        final Dialog dialog = new Dialog(Inscription_1_2.this);
+        final Dialog dialog = new Dialog(Inscription.this);
         // Include dialog.xml file
         dialog.setContentView(R.layout.custom_dialog);
         // Set dialog title

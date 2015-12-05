@@ -3,18 +3,18 @@
 
 
 
-    <item android:title="Inbox"
-          android:id="@+id/nav_item_inbox"
-          android:icon="@drawable/inbox"/>
+    <item android:title="Accueil"
+          android:id="@+id/accueil"
+          android:icon="@drawable/home"/>
 
-    <item android:title="Sent"
-          android:id="@+id/nav_item_sent"
-          android:icon="@drawable/sent"/>
+    <item android:title="Deconnexion"
+          android:id="@+id/deconnexion"
+          android:icon="@drawable/deconn"/>
 
-    <item android:title="Drafts"
-          android:id="@+id/nav_item_draft"
-          android:icon="@drawable/draft"/>
-
+    <item android:title="Quitter"
+          android:id="@+id/quitter"
+          android:icon="@drawable/quitter"/>
+<!--
 
 
     <item android:title="Others">
@@ -36,5 +36,5 @@
              android:icon="@drawable/help"/>
     </group>
 
-
+!-->
 </menu>

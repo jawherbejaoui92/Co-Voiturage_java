@@ -49,7 +49,8 @@
                     android:inputType="textEmailAddress"
                     android:ems="10"
                     android:id="@+id/editTextmail"
-                    android:hint="@string/hint_email" />
+                    android:hint="@string/hint_email"
+                    android:gravity="center" />
             </LinearLayout>
 
             <LinearLayout
@@ -75,7 +76,8 @@
                     android:inputType="textPassword"
                     android:ems="10"
                     android:id="@+id/editTextmdp"
-                    android:hint="@string/hint_mdp"/>
+                    android:hint="@string/hint_mdp"
+                    android:gravity="center" />
 
             </LinearLayout>
 

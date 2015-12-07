@@ -32,9 +32,9 @@
     <string name="hint_ville">Ville</string>
     <string name="hint_reponse">Réponse</string>
     <!-- error provider !-->
-    <string name="erreur_champvide">Attention! champ vide</string>
+    <string name="erreur_champvide">Champ vide</string>
     <string name="erreuremail">xxxxxx@xxxx.xxx </string>
-    <string name="erreurmdp_inf">Minumum 3 caractères</string>
+    <string name="erreurmdp_inf">Minumum 4 caractères</string>
     <string name="erreurmdp_identique">Deux champs non identiques</string>
     <string name="erreur_inf">Minumum 4 caractères</string>
     <string name="erreursex">Selectionner votre sexe !</string>
@@ -57,10 +57,9 @@
     </string-array>
 
     <!-- Rechercher !-->
-    <string name="VilleDep">Ville de depart : </string>
-    <string name="VilleArr">Ville d\'Arriver : </string>
+
     <string name="DateDep">Date de depart : </string>
-    <string name="HeureArr">Heure d\'Arriver : </string>
+
     <string name="NbPlace">Nombre De Place : </string>
     <string name="Description">Description : </string>
     <string name="Bagage">Baggage : </string>
@@ -68,9 +67,6 @@
     <string name="Animale">Animal : </string>
     <string name="Etat">Etat : </string>
 
-    <!-- hint !-->
-    <string name="hint_VilleDep">Ville de depart </string>
-    <string name="hint_VilleArr">Ville d\'Arriver </string>
 
     <!-- Les Buttons!-->
     <string name="buttonRechercher">Rechercher</string>

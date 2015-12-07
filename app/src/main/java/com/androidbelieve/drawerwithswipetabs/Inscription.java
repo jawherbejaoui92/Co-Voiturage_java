@@ -38,15 +38,13 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by Jawher B on 30/10/2015.
  */
 public class Inscription extends AppCompatActivity {
 
-    String name, surname, pw, city, mail, telp;
+    String name, surname, pw, city, mail, telp, question, reponse;
 
     EditText email, mdp, nom, prenom, telephon, ville;
 
@@ -69,11 +67,12 @@ public class Inscription extends AppCompatActivity {
         ville = (EditText) findViewById(R.id.editTextville);
         EditText tel = (EditText) findViewById(R.id.editTexttelephone);
         DatePicker dateNaiss = (DatePicker) findViewById(R.id.datePickerNaiss);
-        EditText rep = (EditText) findViewById(R.id.editText_Reponse);
-        Spinner quest = (Spinner) findViewById(R.id.spinner_question);
+        final EditText rep = (EditText) findViewById(R.id.editText_Reponse);
+        final Spinner quest = (Spinner) findViewById(R.id.spinner_question);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.liste_question, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         quest.setAdapter(adapter);
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -82,19 +81,23 @@ public class Inscription extends AppCompatActivity {
 
         Button button_inscrit = (Button) findViewById(R.id.buttonINSCRI);
 
-        TestVide(email, getResources().getString(R.string.erreur_champvide));
-        if (TestEmail(email) == false) {
-            email.setError("E-mail invalide");
-        }
 
+        TestMotdePasse(mdp, confirmermdp, getResources().getString(R.string.erreurmdp_identique));
+        TestVide(email, getResources().getString(R.string.erreur_champvide));
         TestVide(mdp, getResources().getString(R.string.erreur_champvide));
         TestVide(nom, getResources().getString(R.string.erreur_champvide));
         TestVide(prenom, getResources().getString(R.string.erreur_champvide));
         TestVide(tel, getResources().getString(R.string.erreur_champvide));
         TestVide(ville, getResources().getString(R.string.erreur_champvide));
+
+        TestLonguer(nom, getResources().getString(R.string.erreurmdp_inf));
+        TestLonguer(prenom, getResources().getString(R.string.erreurmdp_inf));
+        TestLonguer(mdp, getResources().getString(R.string.erreurmdp_inf));
+        TestLonguer(ville, getResources().getString(R.string.erreurmdp_inf));
         TestVide(rep, getResources().getString(R.string.erreur_champvide));
+        TestLonguer(rep, getResources().getString(R.string.erreurmdp_inf));
+
         TestLonguerTel(tel, getResources().getString(R.string.erreur_tel));
-        TestMotdePasse(mdp, confirmermdp, getResources().getString(R.string.erreurmdp_identique));
         String strEmailAddress;
 
 
@@ -103,19 +106,26 @@ public class Inscription extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (TestAll() == "done") {
+
+
                     name = nom.getText().toString();
                     pw = mdp.getText().toString();
                     surname = prenom.getText().toString();
                     telp = telephon.getText().toString();
                     city = ville.getText().toString();
                     mail = email.getText().toString();
+                    question = quest.getSelectedItem().toString();
+                    reponse = rep.getText().toString();
                     UserInsc();
+
+
                     Intent myIntent = new Intent(Inscription.this, MainActivity.class);
                     startActivity(myIntent);
 
                 } else {
                     CustomDialag(TestAll());
                 }
+
             }
         });
     }
@@ -124,6 +134,7 @@ public class Inscription extends AppCompatActivity {
     public String TestAll() {
         String msg;
         EditText email = (EditText) findViewById(R.id.editTextmail);
+        //EditText qst = (EditText) findViewById(R.id.ed);
         EditText mdp = (EditText) findViewById(R.id.editTextmdp);
         EditText confirmermdp = (EditText) findViewById(R.id.editTextconfirmer_mdp);
         EditText nom = (EditText) findViewById(R.id.editTextnom);
@@ -139,34 +150,23 @@ public class Inscription extends AppCompatActivity {
         Spinner quest = (Spinner) findViewById(R.id.spinner_question);
 
 
-        if (email.getText().toString().length() == 0) {
-            msg = "Saisir votre mail";
-        } else if (TestEmail(email) == false) {
-            msg = "E-mail invalide";
-        } else if (mdp.getText().toString().length() <4 ) {
-            msg = "Au moin 4 caractères pour votre mot de passe";
-        } else if (confirmermdp.getText().toString().length() == 0) {
-            msg = "Confirmer votre mot de passe";
-        } else if (nom.getText().toString().length() == 0) {
-            msg = "Saisir votre nom";
-        } else if (prenom.getText().toString().length() == 0) {
-            msg = "Saisir votre prénom";
-        } else if (!(homme.isChecked()) && !(femme.isChecked())) {
-            msg = "Selectionne votre sexe";
-        } else if ((tel.getText().toString().length() == 0)) {
-            msg = "Saisir votre numéro de téléphone";
-        } else if ((tel.getText().toString().length() != 8)) {
-            msg = "Numéro de téléphone invalide";
-        } else if (ville.getText().toString().length() == 0) {
-            msg = "Saisir votre ville";
-        } else if (2015 - dateNaiss.getYear() < 18) {
-            msg = "Vous devez être agé au moin de 18 ans";
-        } else if (quest.getSelectedItemPosition() == 0) {
-            msg = "Choisir votre question de sécurité";
-        } else if (rep.getText().toString().length() == 0) {
-            msg = "Saisir votre réponse";
+
+        if ((email.getText().toString().length() < 4) || (mdp.getText().toString().length() < 4) || (confirmermdp.getText().toString().length() < 4) || (nom.getText().toString().length() < 4) || (prenom.getText().toString().length() < 4) || (tel.getText().toString().length() < 4) || (ville.getText().toString().length() < 4)) {
+            msg = "4 caractères minimum pour chaque champ";
         } else if (!(mdp.getText().toString().equals(confirmermdp.getText().toString()))) {
             msg = "Mot de passe non identiques";
+        } else if (!(homme.isChecked()) && !(femme.isChecked())) {
+            msg = "Selectionne votre sexe";
+        } else if ((tel.getText().toString().length() != 8)) {
+            msg = "Numéro de téléphone invalide";
+        } else if (2015 - dateNaiss.getYear() < 18) {
+            msg = "Date de naissance invalide";
+        } else if (quest.getSelectedItemPosition() == 0) {
+            msg = "Choisir votre question de sécurité";
+        } else if ((rep.getText().toString().length() < 4)) {
+            msg = "4 caractères minimum pour votre réponse";
+        } else if ((rep.getText().toString().length() < 4)) {
+            msg = "4 caractères minimum pour votre réponse";
         } else {
             msg = "done";
         }
@@ -175,21 +175,37 @@ public class Inscription extends AppCompatActivity {
 
     }
 
-    public Boolean TestEmail(final EditText champ) {
-        Boolean v = false;
-        String emailRegEx;
-        Pattern pattern;
-        // Regex for a valid email address
-        emailRegEx = "^[A-Za-z0-9._%+\\-]+@[A-Za-z0-9.\\-]+\\.[A-Za-z]{2,4}$";
-        // Compare the regex with the email address
-        pattern = Pattern.compile(emailRegEx);
-        Matcher matcher = pattern.matcher(champ.getText().toString());
-        if (!matcher.find()) {
-            return false;
-        }
-        return true;
-    }
 
+    public void TestLonguer(final EditText champ, final String msg) {
+
+        champ.addTextChangedListener(new TextWatcher() {
+
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if (champ.getText().toString().length() < 4) {
+                    champ.setError(msg.toString());
+
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (champ.getText().toString().length() < 4) {
+                    champ.setError(msg.toString());
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (champ.getText().toString().length() < 4) {
+                    champ.setError(msg.toString());
+
+                }
+            }
+        });
+    }
 
     public void TestVide(final EditText champ, final String msg) {
 
@@ -296,12 +312,14 @@ public class Inscription extends AppCompatActivity {
     //oui
     public void UserInsc() {
         ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-        nameValuePairs.add(new BasicNameValuePair("email", "benas@gmail.com"));
-        nameValuePairs.add(new BasicNameValuePair("nom", "med bns"));
-        nameValuePairs.add(new BasicNameValuePair("pw", "passssss"));
-        nameValuePairs.add(new BasicNameValuePair("prenom", "thebns"));
-        nameValuePairs.add(new BasicNameValuePair("telephone", "55908712"));
-        nameValuePairs.add(new BasicNameValuePair("ville", "brdoCity"));
+        nameValuePairs.add(new BasicNameValuePair("email", mail));
+        nameValuePairs.add(new BasicNameValuePair("nom",name));
+        nameValuePairs.add(new BasicNameValuePair("pw", pw));
+        nameValuePairs.add(new BasicNameValuePair("prenom", surname));
+        nameValuePairs.add(new BasicNameValuePair("telephone", telp));
+        nameValuePairs.add(new BasicNameValuePair("ville", city));
+        nameValuePairs.add(new BasicNameValuePair("quest", question));
+        nameValuePairs.add(new BasicNameValuePair("rep", reponse));
 
         try {
             /*JSONObject json = new JSONObject();
@@ -311,7 +329,7 @@ public class Inscription extends AppCompatActivity {
             HttpConnectionParams.setConnectionTimeout(httpParams, 5000);
             HttpConnectionParams.setSoTimeout(httpParams, 5000);
             HttpClient client = new DefaultHttpClient(httpParams);
-            String url = "http://192.168.1.1/co-voiturage_php/covWS/inscription.php";
+            String url = "http://192.168.1.8/co-voiturage_php/covWS/inscription.php";
 
             HttpPost request = new HttpPost(url);
             // request.setEntity(new ByteArrayEntity(json.toString().getBytes("UTF8")));
@@ -330,7 +348,7 @@ public class Inscription extends AppCompatActivity {
 
                     Toast.makeText(Inscription.this, "Inscri OK",
                             Toast.LENGTH_LONG).show();
-                    Intent myIntent = new Intent(Inscription.this, MainActivity.class);
+                    Intent myIntent = new Intent(Inscription.this, Connexion.class);
                     startActivity(myIntent);
                 } else {
                     Toast.makeText(Inscription.this, "Sorry, Try Again",
@@ -372,6 +390,7 @@ public class Inscription extends AppCompatActivity {
         // Include dialog.xml file
         dialog.setContentView(R.layout.custom_dialog);
         // Set dialog title
+        dialog.setTitle("Erreur");
 
         // set values for custom dialog components - text, image and button
         TextView text = (TextView) dialog.findViewById(R.id.text);

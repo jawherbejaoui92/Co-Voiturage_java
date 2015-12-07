@@ -31,18 +31,16 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by dfghj on 04/11/2015.
  */
 
-public class Connexion extends Activity {
+public class  Connexion extends Activity {
     InputStream is;
-    String result, name, line, mail, pass;
-    EditText email_et, pw_et;
-    Button btn_cnx, btn_ins;
+    String result,name,line,mail,pass;
+    EditText email_et,pw_et;
+    Button btn_cnx,btn_ins;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,17 +51,15 @@ public class Connexion extends Activity {
             StrictMode.setThreadPolicy(policy);
         }
 
-        email_et = (EditText) findViewById(R.id.editTextmail);
-        pw_et = (EditText) findViewById(R.id.editTextmdp);
+        email_et = (EditText)findViewById(R.id.editTextmail);
+        pw_et = (EditText)findViewById(R.id.editTextmdp);
 
-
-        if (TestEmail(email_et) == false) {
-            email_et.setError("E-mail invalide");
-        }
         TestVide(email_et, getResources().getString(R.string.erreur_champvide));
+        TestVide(pw_et, getResources().getString(R.string.erreur_champvide));
+        TestLonguer(email_et, getResources().getString(R.string.erreurmdp_inf));
         TestLonguer(pw_et, getResources().getString(R.string.erreurmdp_inf));
 
-        btn_ins = (Button) findViewById(R.id.buttoninscription);
+        btn_ins = (Button)findViewById(R.id.buttoninscription);
 
 
         btn_ins.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +71,7 @@ public class Connexion extends Activity {
         });
 
 
-        btn_cnx = (Button) findViewById(R.id.buttonconnexion);
+        btn_cnx = (Button)findViewById(R.id.buttonconnexion);
         btn_cnx.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,7 +79,8 @@ public class Connexion extends Activity {
                     mail = email_et.getText().toString();
                     pass = pw_et.getText().toString();
                     UserLogin();
-                } else {
+                }
+                else {
                     CustomDialag(TestAll());
                 }
 
@@ -93,22 +90,7 @@ public class Connexion extends Activity {
     }
 
 
-    public Boolean TestEmail(final EditText champ) {
-        Boolean v = false;
-        String emailRegEx;
-        Pattern pattern;
-        // Regex for a valid email address
-        emailRegEx = "^[A-Za-z0-9._%+\\-]+@[A-Za-z0-9.\\-]+\\.[A-Za-z]{2,4}$";
-        // Compare the regex with the email address
-        pattern = Pattern.compile(emailRegEx);
-        Matcher matcher = pattern.matcher(champ.getText().toString());
-        if (!matcher.find()) {
-            return false;
-        }
-        return true;
-    }
-
-    public void UserLogin() {
+    public void UserLogin(){
         ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 
         nameValuePairs.add(new BasicNameValuePair("mail", mail));
@@ -121,7 +103,7 @@ public class Connexion extends Activity {
             HttpConnectionParams.setConnectionTimeout(httpParams, 5000);
             HttpConnectionParams.setSoTimeout(httpParams, 5000);
             HttpClient client = new DefaultHttpClient(httpParams);
-            String url = "http://192.168.56.1/co-voiturage_php/covWS/Login.php";
+            String url = "http://192.168.1.5/co-voiturage_php/covWS/UserWS.php";
 
             HttpPost request = new HttpPost(url);
             // request.setEntity(new ByteArrayEntity(json.toString().getBytes("UTF8")));
@@ -135,14 +117,17 @@ public class Connexion extends Activity {
                 String result = convertStreamToString(instream);
 
                 JSONObject json_data = new JSONObject(result);
-                int code = (json_data.getInt("code"));
-                if (code == 1) {
+                int code=(json_data.getInt("code"));
+                if(code==1)
+                {
 
                     Toast.makeText(Connexion.this, "Connexion OK",
                             Toast.LENGTH_LONG).show();
                     Intent myIntent = new Intent(Connexion.this, MainActivity.class);
                     Connexion.this.startActivity(myIntent);
-                } else {
+                }
+                else
+                {
                     Toast.makeText(Connexion.this, "Sorry, Try Again",
                             Toast.LENGTH_LONG).show();
                 }
@@ -152,19 +137,19 @@ public class Connexion extends Activity {
                     Toast.LENGTH_LONG).show();
         }
     }
-
+    //Convertir l'InputStream du resultat en String
     public static String convertStreamToString(InputStream is) {
         StringBuilder sb = new StringBuilder();
-        try {
+        try{
             BufferedReader reader = new BufferedReader(new InputStreamReader(is, HTTP.UTF_8));
             String line = null;
             while ((line = reader.readLine()) != null) {
                 sb.append(line).append("\n");
             }
             is.close();
-        } catch (OutOfMemoryError om) {
+        } catch(OutOfMemoryError om){
             om.printStackTrace();
-        } catch (Exception ex) {
+        } catch(Exception ex){
             ex.printStackTrace();
         }
         return sb.toString();
@@ -172,18 +157,16 @@ public class Connexion extends Activity {
 
     public String TestAll() {
         String msg;
-        EditText email = (EditText) findViewById(R.id.editTextmail);
-        EditText mdp = (EditText) findViewById(R.id.editTextmdp);
+        EditText email = (EditText)findViewById(R.id.editTextmail);
+        EditText mdp = (EditText)findViewById(R.id.editTextmdp);
 
-        if (email.getText().toString().length() == 0) {
-            msg = "Saisir votre e-mail";
-        } else if (TestEmail(email) == false) {
-            msg = "E-mail invalide";
-        } else if (mdp.getText().toString().length() < 4) {
-            msg = "Au moin 4 caractères pour votre mot de passe";
+
+        if ((email.getText().toString().length() < 4) || (mdp.getText().toString().length() < 4)) {
+            msg = "4 caractères minimum pour chaque champ";
         } else {
             msg = "done";
         }
+
         return msg;
 
     }
@@ -347,13 +330,6 @@ public class Connexion extends Activity {
 
         dialog.show();
 
-    }
-
-    public void onBackPressed() {
-
-        android.os.Process.killProcess(android.os.Process.myPid());
-
-        // This above line close correctly
     }
 
 

@@ -8,7 +8,7 @@ import android.widget.ListView;
 /**
  * Created by Sirine on 05/12/2015.
  */
-public class Liste_Recherche extends Activity {
+public class List_Recherche extends Activity {
 
 
 

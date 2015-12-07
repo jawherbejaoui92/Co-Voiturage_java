@@ -43,7 +43,7 @@ public class Fragment_recherche extends Fragment {
                     }
                     else
                     {
-                        Intent myIntent = new Intent(getActivity(), Liste_Recherche.class);
+                        Intent myIntent = new Intent(getActivity(), List_Recherche.class);
                         getActivity().startActivity(myIntent);
                     }
 

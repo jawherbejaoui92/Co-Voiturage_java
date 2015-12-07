@@ -88,7 +88,7 @@
         android:text="@string/button_connexion"
         android:id="@+id/buttonconnexion"
         android:layout_gravity="center_horizontal"
-        android:textSize="25dp" />
+        android:textStyle="bold" />
 
     <LinearLayout
         android:orientation="vertical"
